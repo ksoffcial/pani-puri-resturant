@@ -11,7 +11,8 @@ const cartRouter = require("./routes/cartSection")
 
 
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: ['http://localhost:5173',
+        'https://pani-puri-resturant.vercel.app'],
     credentials: true
 }))
 
