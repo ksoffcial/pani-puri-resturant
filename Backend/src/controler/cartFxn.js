@@ -31,7 +31,7 @@ const removeOnCart = async (req, res) => {
         const userId = req.result._id;
         const productId = req.params.pid;
 
-        console.log("userid is here",userId)
+        console.log("userid is here", userId)
         console.log(productId)
         let cart = await CartItem.findOne({ userId: userId });
 
@@ -57,13 +57,14 @@ const cartDetails = async (req, res) => {
     try {
         const userId = req.result._id;
 
-        const cartData = await CartItem.find({ userId: new mongoose.Types.ObjectId(userId) }).populate({
+        const cart= await CartItem.find({ userId: new mongoose.Types.ObjectId(userId) }).populate({
             path: "items.product",
             select: "_id itemName imageLink actualPrice finalPrice"
         })
-        console.log("cart data is here ", cartData)
+        // console.log("cart data is here ", cartData[0])
 
-        res.send(cartData)
+        res.status(201).json({ message: "cart data get sucessfully", cart });
+        
 
     }
     catch (err) {

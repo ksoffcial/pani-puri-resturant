@@ -56,6 +56,7 @@ const Navbar = () => {
             <li><a>Menu</a></li>
             <li><a>Offers</a></li>
             <li><a>Contact</a></li>
+            <li><a onClick={()=>navigate('/login')}>Login</a></li>
           </ul>
         </div>
 

@@ -6,7 +6,7 @@ export const getCartData = createAsyncThunk(
     async (_, { rejectWithValue }) => {
         try {
             const response = await axiosClient.get("/cart/cartDetails");
-            return response.data[0].items;
+            return response.data.cart[0].items;
         }
         catch (error) {
             return rejectWithValue(error.response?.data?.message || error.message)
@@ -19,7 +19,7 @@ export const removeData = createAsyncThunk(
     async (id, { rejectWithValue }) => {
         try {
             const response = await axiosClient.delete(`/cart/remove/${id}`);
-            return response.data[0].items;;
+            return response.data.cart[0].items;
         }
         catch (error) {
             return rejectWithValue(error.response?.data?.message || error.message)
@@ -30,7 +30,7 @@ export const removeData = createAsyncThunk(
 const cartSlice = createSlice({
     name: 'cart',
     initialState: {
-        cartData: null,
+        cartData:[],
         cartLoading: false,
         cartError: null,
     },
@@ -50,7 +50,6 @@ const cartSlice = createSlice({
             })
             .addCase(getCartData.rejected, (state, action) => {
                 state.cartLoading = false;
-                state.cartData = null;
                 state.cartError = action.payload?.message || "some thing went worng"
             })
 
@@ -62,11 +61,9 @@ const cartSlice = createSlice({
             .addCase(removeData.fulfilled, (state, action) => {
                 state.cartLoading = false;
                 state.cartData =  action.payload
-                state.cartError = null;
             })
             .addCase(removeData.rejected, (state, action) => {
                 state.cartLoading = false;
-                state.cartData = null;
                 state.cartError = action.payload?.message || "some thing went worng"
             })
     }
