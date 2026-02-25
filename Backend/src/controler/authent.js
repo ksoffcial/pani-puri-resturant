@@ -21,7 +21,7 @@ const registerUser = async (req, res) => {
         }
 
         const token = jwt.sign({ _id: user._id, emailId: user.emailId, role: user.role }, process.env.PRIVATE_KEY, { expiresIn: 3600 })
-        res.cookie('token', token, { maxAge: 3600 * 1000 })
+        res.cookie('token', token, { httpOnly: true, secure: true, sameSite: "none", maxAge: 3600 * 1000 })
 
         res.status(200).json({
             user: reply,
@@ -37,7 +37,7 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res) => {
     try {
         const { phoneNumber, password } = req.body;
-       
+
         if (!phoneNumber) {
             throw new Error("Invalid crendentials")
         }
@@ -45,7 +45,7 @@ const loginUser = async (req, res) => {
         if (!password) {
             throw new Error("Invalid crendentials")
         }
-        
+
         const user = await User.findOne({ phoneNumber: phoneNumber })
         if (!user) {
             return res.status(500).send("User does not exist")
@@ -64,7 +64,7 @@ const loginUser = async (req, res) => {
         }
 
         const token = jwt.sign({ _id: user._id, emailId: user.emailId, role: user.role }, process.env.PRIVATE_KEY, { expiresIn: 3600 })
-        res.cookie('token', token, { maxAge: 3600 * 1000 })
+        res.cookie('token', token, { httpOnly: true, secure: true, sameSite: "none", maxAge: 3600 * 1000 })
         res.status(201).json({
             user: reply,
             message: "User login sucessfully"
@@ -86,7 +86,7 @@ const logoutUser = async (req, res) => {
         await redisClient.set(`token${token}`, "Blocked")
         await redisClient.expireAt(`token:${token}`, payload.exp)
 
-        res.cookie("token", null, { expires: new Date(Date.now()) })
+        res.cookie("token", null, { httpOnly: true, secure: true, sameSite: "none", expires: new Date(Date.now()) })
 
         res.send("logout sucesfully ")
 

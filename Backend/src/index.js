@@ -16,6 +16,8 @@ app.use(cors({
     credentials: true
 }))
 
+app.set("trust proxy", 1);
+
 app.use((req, res, next) => {
     console.log(req.method, req.url, req.body);
     next();

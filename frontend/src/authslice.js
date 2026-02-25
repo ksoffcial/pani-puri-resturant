@@ -6,7 +6,7 @@ export const registerUser = createAsyncThunk(
     'auth/register',
     async (userData, { rejectWithValue }) => {
         try {
-            const response = await axiosClient.post('/user/register', userData);
+            const response = await axiosClient.post('/user/register', userData,{ withCredentials: true });
             return response.data.user
         }
         catch (err) {
@@ -19,7 +19,7 @@ export const loginUser = createAsyncThunk(
     'auth/login',
     async (credentials, { rejectWithValue }) => {
         try {
-            const response = await axiosClient.post("/user/login", credentials)
+            const response = await axiosClient.post("/user/login", credentials,{ withCredentials: true })
             return response.data.user
         }
         catch (err) {
@@ -45,7 +45,7 @@ export const logoutUser = createAsyncThunk(
     'auth/logout',
     async (_, { rejectWithValue }) => {
         try {
-            const response = await axiosClient.post("/user/logout");
+            const response = await axiosClient.post("/user/logout",{ withCredentials: true });
             return response.data.message;
         }
         catch (error) {
@@ -54,18 +54,6 @@ export const logoutUser = createAsyncThunk(
     }
 )
 
-export const  getCartData = createAsyncThunk(
-    'cart/getdata',
-    async(_,{rejectWithValue})=>{
-        try{
-            const response = await axiosClient.get("/cart/cartDetails");
-            return response.data[0].items;
-        }
-        catch(error){
-            return rejectWithValue(error.response?.data?.message || error.message)
-        }
-    }
-)
 
 
 
@@ -76,9 +64,6 @@ const authSlice = createSlice({
         isAuthenticated: false,
         loading: false,
         error: null,
-        cartData:null,
-        cartLoading:false,
-        cartError:null,
     },
     reducers: {
     },
@@ -154,23 +139,6 @@ const authSlice = createSlice({
                 state.user = null;
             })
 
-
-            // geting the data for cart
-
-            // .addCase(getCartData.pending,(state)=>{
-            //     state.cartLoading = true;
-            //     state.cartError = null;
-            // })
-            // .addCase(getCartData.fulfilled,(state,action)=>{
-            //     state.cartLoading = false;
-            //     state.cartData = action.payload;
-            //     state.cartError = null;
-            // })
-            // .addCase(getCartData.rejected,(state,action)=>{
-            //     state.cartLoading = false;
-            //     state.cartData = null;
-            //     state.cartError = action.payload?.message || "some thing went worng"
-            // })
     }
 })
 
