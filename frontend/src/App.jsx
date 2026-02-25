@@ -9,7 +9,7 @@ import { checkUser } from './authslice'
 import AdminPanel from './pages/AdminPanel'
 import Admincreate from './pages/Admincreate'
 import Admindelete from './pages/Admindelete'
-import AdminAllUser from './pages/adminAllUser'
+import AdminAllUser from './pages/AdminAllUser'
 import Cart from './pages/Cart'
 
 const App = () => {
